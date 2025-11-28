@@ -1,0 +1,224 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# countrynames
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+An R package for detecting and counting country names in text and counting how many unique countries are. This is a package which I use to learn how R packages are developed.
+
+## Overview
+
+`countrynames` provides simple functions to identify country names mentioned in text strings and count how many countries are referenced. This can be useful for text analysis, natural language processing, and extracting geographic information from documents.
+
+## Installation
+
+You can install the development version from GitHub:
+
+```{r installation, eval = FALSE}
+# install.packages("devtools")
+devtools::install_github("melikekocacik/countrydetect")
+```
+
+## Features
+
+- Detect country names in any text string
+- Support for 193+ countries including UN member states
+- Case-insensitive or case-sensitive matching
+- Count the number of unique countries mentioned
+- Handles countries with multi-word names (e.g., "United States", "New Zealand")
+- Recognizes common alternative names (USA, UK, UAE, etc.)
+
+## Functions
+
+### `country_name()`
+
+Detects country names in text and returns them as a character vector.
+
+**Parameters:**
+
+- `text`: A character string containing the text to search
+- `return_all`: Logical. If `TRUE`, returns all found countries. If `FALSE`, returns only the first match (default: `TRUE`)
+- `ignore_case`: Logical. If `TRUE`, performs case-insensitive matching (default: `TRUE`)
+
+**Returns:** A character vector of detected country names, or `NULL` if no countries found
+
+### `howmany()`
+
+Counts the number of unique countries mentioned in text.
+
+**Parameters:**
+
+- `text`: A character string containing the text to search
+- `ignore_case`: Logical. If `TRUE`, performs case-insensitive matching (default: `TRUE`)
+
+**Returns:** An integer representing the number of unique countries found
+
+## Usage Examples
+
+### Basic Usage
+
+```{r basic_usage, eval = FALSE}
+library(countrydetect)
+
+# Detect countries in text
+text1 <- "I have traveled to France, Germany, and Japan."
+country_name(text1)
+#> [1] "France"  "Germany" "Japan"
+
+# Count countries
+howmany(text1)
+#> [1] 3
+```
+
+### Case Sensitivity
+
+```{r case_sensitivity, eval = FALSE}
+# Case-insensitive (default)
+country_name("I love FRANCE and germany", ignore_case = TRUE)
+#> [1] "France"  "Germany"
+
+# Case-sensitive
+country_name("I visited france", ignore_case = FALSE)
+#> NULL
+
+country_name("I visited France", ignore_case = FALSE)
+#> [1] "France"
+```
+
+### Return Options
+
+```{r return_options, eval = FALSE}
+text2 <- "The United States and Canada are neighbors."
+
+# Return all countries
+country_name(text2, return_all = TRUE)
+#> [1] "United States" "Canada"
+
+# Return only first match
+country_name(text2, return_all = FALSE)
+#> [1] "United States"
+```
+
+### Handling Multiple Mentions
+
+```{r duplicates, eval = FALSE}
+# Duplicates are automatically removed
+text3 <- "France is great. I love France. France is beautiful."
+country_name(text3)
+#> [1] "France"
+
+howmany(text3)
+#> [1] 1
+```
+
+### No Countries Found
+
+```{r no_countries, eval = FALSE}
+text4 <- "This text has no country names."
+country_name(text4)
+#> NULL
+
+howmany(text4)
+#> [1] 0
+```
+
+### Alternative Country Names
+
+```{r alternative_names, eval = FALSE}
+text5 <- "The USA and UK have a special relationship."
+country_name(text5)
+#> [1] "USA" "UK"
+
+howmany(text5)
+#> [1] 2
+```
+
+## Supported Countries
+
+The package includes:
+
+- All 193 UN member states
+- Common territories (Taiwan, Kosovo, Palestine, etc.)
+- Alternative names (USA, UK, UAE, DRC, etc.)
+
+## Use Cases
+
+- **Text Mining**: Extract geographic information from documents
+- **Content Analysis**: Analyze which countries are mentioned in news articles or social media
+- **Data Cleaning**: Identify and standardize country references in datasets
+- **Academic Research**: Analyze country mentions in literature or publications
+- **Business Intelligence**: Track geographic mentions in customer feedback or reports
+
+## Example: Real Data Analysis
+
+```{r real_example, eval = FALSE}
+# Analyze a collection of news headlines
+headlines <- c(
+  "Trade tensions rise between China and United States",
+  "European summit in France discusses climate change",
+  "Japan and South Korea reach historic agreement",
+  "Tech innovation continues to grow in India"
+)
+
+# Find all countries mentioned
+all_countries <- lapply(headlines, country_name)
+print(all_countries)
+
+# Count countries per headline
+country_counts <- sapply(headlines, howmany)
+print(country_counts)
+
+# Get unique countries across all headlines
+unique_countries <- unique(unlist(all_countries))
+print(unique_countries)
+```
+
+## Testing
+
+The package includes comprehensive tests using `testthat`. To run tests:
+
+```{r testing, eval = FALSE}
+devtools::test()
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License.
+
+## Author
+
+Your Name
+
+## Issues
+
+If you encounter any bugs or have feature requests, please file an issue on GitHub.
+
+## Acknowledgments
+
+Country list based on UN member states and commonly recognized territories.
+
+---
+
+**Note**: To generate the README.md file from this README.Rmd, run:
+
+```{r render, eval = FALSE}
+rmarkdown::render("README.Rmd")
+```
