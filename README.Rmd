@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-An R package for detecting and counting country names in text and counting how many unique countries are. This is a package which I use to learn how R packages are developed.
+An R package which is used to learn how R packages are developed. Educational purposes only:)
 
 ## Overview
 
